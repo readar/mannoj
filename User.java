@@ -1,4 +1,5 @@
-package com.base.model;
+package com.colb2.model;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,60 +11,63 @@ import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table
 @Component
 public class User {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	
 	public int id;
-	@NotEmpty(message="first name cannot be empty")
-	public String firstname;
-	@NotEmpty(message="middle name cannot be empty")
-	public String middlename;
-	@NotEmpty(message="last name cannot be empty")
-	public String lastname;
+	
 	@NotEmpty(message="username cannot be empty")
 	public String username;
+	
 	@NotEmpty(message="password cannot be empty")
 	public String password;
+	
 	@NotEmpty(message="email cannot be empty")
 	public String email;
 	
-	@Transient
-	@NotEmpty(message="password and confirmpassword should be same")
-	private String confirmpassword;
+	private String role;
+	
+	private String Address;
 	
 	@Column(name="enabled")
 	private boolean isEnabled;
 	
+	@Transient
+	private MultipartFile file;
 	
+	
+	public MultipartFile getFile() {
+		return file;
+	}
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getFirstname() {
-		return firstname;
+	public String getRole() {
+		return role;
 	}
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setRole(String role) {
+		this.role = role;
 	}
-	public String getMiddlename() {
-		return middlename;
+	public String getAddress() {
+		return Address;
 	}
-	public void setMiddlename(String middlename) {
-		this.middlename = middlename;
+	public void setAddress(String address) {
+		Address = address;
 	}
-	public String getLastname() {
-		return lastname;
-	}
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -88,12 +92,6 @@ public class User {
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
 	}
-	public String getConfirmpassword() {
-		return confirmpassword;
-	}
-	public void setConfirmpassword(String confirmpassword) {
-		this.confirmpassword = confirmpassword;
-	}
-	
+
 	
 }

@@ -1,4 +1,5 @@
-package com.base.dao;
+package com.colb2.dao;
+
 
 import java.util.List;
 
@@ -11,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.base.model.User;
-import com.base.model.UserRole;
+import com.colb2.model.User;
+
+
 
 
 @Repository("userDAO")
@@ -28,17 +30,18 @@ public class UserDAOImpl implements UserDAO {
 		this.sessionFactory = sessionFactory;
 		System.out.println("Inside UserDAOImpl");
 	}
-	@Transactional
+	
+	
 	public void saveOrUpdate(User user) {
 		Session session=sessionFactory.getCurrentSession();
 		Transaction tx=session.beginTransaction();
-		user.setEnabled(true);
+		user.setEnabled(false);
 		session.save(user);
-	    UserRole userRole=new UserRole();
+	  /*  UserRole userRole=new UserRole();
 		userRole.setId(user.getId());
 		userRole.setAuthority("ROLE_USER");
 		session.save(userRole);
-		System.out.println("Done saving user");
+*/		System.out.println("Done saving user");
 		tx.commit();
 	}
 	@Transactional
