@@ -1,6 +1,6 @@
-package com.colb2.model;
+package com.niit.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,29 +11,25 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table
+@Table(name="Forum")
 @Component
 public class Forum {
 	
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int ForumID;
-	private String ForumTitle;	
-    private String ForumContent;
+	private String ForumTitle;
+	private String ForumCategory;
+	public String getForumCategory() {
+		return ForumCategory;
+	}
+	public void setForumCategory(String forumCategory) {
+		ForumCategory = forumCategory;
+	}
+	private String ForumContent;
 	private String ForumCreatedUser;
 	private Date ForumCreationDate;
 	private String ForumStatus;
-	
-	private String Category;
-	
-	
-	public String getCategory() {
-		return Category;
-	}
-	public void setCategory(String category) {
-		Category = category;
-	}
 	public int getForumID() {
 		return ForumID;
 	}
@@ -70,5 +66,7 @@ public class Forum {
 	public void setForumStatus(String forumStatus) {
 		ForumStatus = forumStatus;
 	}
+	
+	
 
 }

@@ -1,6 +1,6 @@
-package com.colb2.model;
+package com.niit.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,10 +11,9 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table
+@Table(name="Blog")
 @Component
 public class Blog {
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int BlogID;
@@ -22,7 +21,7 @@ public class Blog {
 	private String BlogContent;
 	private String BlogCreatedUser;
 	private Date BlogCreationDate;
-	
+	private String BlogStatus;
 	
 	public int getBlogID() {
 		return BlogID;
@@ -54,6 +53,11 @@ public class Blog {
 	public void setBlogCreationDate(Date blogCreationDate) {
 		BlogCreationDate = blogCreationDate;
 	}
-
-
+	public String getBlogStatus() {
+		return BlogStatus;
+	}
+	public void setBlogStatus(String blogStatus) {
+		BlogStatus = blogStatus;
+	}
+	
 }

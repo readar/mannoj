@@ -1,18 +1,21 @@
-package com.colb2.dao;
+package com.niit.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import com.colb2.model.Forum;
-import com.colb2.model.User;
+import com.niit.model.Forum;
 
+
+
+@Repository("forumDAO")
 public class ForumDAOImpl implements ForumDAO {
+	
 
 	
 	@Autowired
@@ -23,8 +26,8 @@ public class ForumDAOImpl implements ForumDAO {
 	public ForumDAOImpl(SessionFactory sf){
 		this.sessionFactory=sf;
 	}
-	
-	public void saveOrUpdate(Forum f) {
+//	@Override
+	public void createForum(Forum f) {
 		// TODO Auto-generated method stub
 		Session s=sessionFactory.getCurrentSession();
 		Transaction t=s.beginTransaction();
@@ -34,45 +37,29 @@ public class ForumDAOImpl implements ForumDAO {
 
 	}
 
-	
+//	@Override
 	public List<Forum> getForumList() {
-		@SuppressWarnings("unchecked")
-		List<Forum> list = (List<Forum>) sessionFactory.getCurrentSession().createCriteria(User.class)
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-		return list;
-
-		/*List<Forum> lst;
+		// TODO Auto-generated method stub
+		List<Forum> lst;
 		System.out.println("getAllForums()");
 		Session ses = sessionFactory.openSession();
 		System.out.println("getForumList()session " + ses.isOpen());
 		Query qry = ses.createQuery("from Forum where forumstatus='valid'");
 		lst = qry.list();
 		System.out.println(lst);
-		return lst;*/			
+		return lst;			
 	}
 
+//	@Override
 	public void deleteForum(Forum f) {
-		Session s=sessionFactory.getCurrentSession();
-		Transaction t=s.beginTransaction();
-		deleteForum(f);
-		t.commit();
-		
+		// TODO Auto-generated method stub
+
 	}
 
-	public Forum getForumid(int fid) {
-		String hql = "from Forum where forumid=" + "'" + fid + "'";
-		Query query = (Query) sessionFactory.getCurrentSession().createQuery(hql);
-		@SuppressWarnings("unchecked")
-		List<Forum> listUser = (List<Forum>) query.list();
-
-		if (listUser != null && listUser.isEmpty()) {
-			return listUser.get(0);
-		}
-		System.out.println("success");
-
+//	@Override
+	public Forum getCompleteForum(int fid) {
+		// TODO Auto-generated method stub
 		return null;
-		
-		
 	}
 
 

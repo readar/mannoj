@@ -1,16 +1,15 @@
-package com.colb2.dao;
+package com.niit.dao;
 
 import java.util.List;
 
-import com.colb2.model.Blog;
+import com.niit.model.Blog;
+
+
 
 public interface BlogDAO {
-	
-    public Blog getblogid(int bid);
+	public void createBlog(Blog b);
 	public List<Blog> getBlogList();
 	public void deleteBlog(Blog b);	
-	public void saveOrUpdate(Blog b);
-//	public Blog getCompleteBlog(int bid);
-//	public void createBlog(Blog b);
-
+	public Blog getCompleteBlog(int bid);
+	
 }

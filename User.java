@@ -1,5 +1,4 @@
-package com.colb2.model;
-
+package com.niit.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Entity
 @Table
 @Component
+
 public class User {
 	
 	@Id
@@ -29,16 +29,44 @@ public class User {
 	@NotEmpty(message="password cannot be empty")
 	public String password;
 	
+	@Transient
+	private String ConfirmPassword;
+	
+	public String getConfirmPassword() {
+		return ConfirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		ConfirmPassword = confirmPassword;
+	}
 	@NotEmpty(message="email cannot be empty")
 	public String email;
 	
 	private String role;
 	
+	private String authority;
+	
+	
+	
+	public String getAuthority() {
+		return authority;
+	}
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
 	private String Address;
 	
 	@Column(name="enabled")
 	private boolean isEnabled;
 	
+	private boolean isAdmin;
+	
+	
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 	@Transient
 	private MultipartFile file;
 	
@@ -93,5 +121,8 @@ public class User {
 		this.isEnabled = isEnabled;
 	}
 
+
+	
+	
 	
 }

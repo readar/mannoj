@@ -1,5 +1,4 @@
-package com.colb2.dao;
-
+package com.niit.dao;
 
 import java.util.List;
 
@@ -12,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.colb2.model.User;
-
+import com.niit.model.User;
 
 
 
 @Repository("userDAO")
+
 public class UserDAOImpl implements UserDAO {
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -35,19 +35,15 @@ public class UserDAOImpl implements UserDAO {
 	public void saveOrUpdate(User user) {
 		Session session=sessionFactory.getCurrentSession();
 		Transaction tx=session.beginTransaction();
-		user.setEnabled(false);
 		session.save(user);
-	  /*  UserRole userRole=new UserRole();
-		userRole.setId(user.getId());
-		userRole.setAuthority("ROLE_USER");
-		session.save(userRole);
-*/		System.out.println("Done saving user");
+		System.out.println("Done saving user");
 		tx.commit();
 	}
 	@Transactional
-	public void delete(int id) {
+	public void delete(int uid) {
 		User user = new User();
-		user.setId(id);
+		user.setId(uid);
+
 		sessionFactory.getCurrentSession().delete(user);
 
 	}
@@ -88,7 +84,7 @@ public class UserDAOImpl implements UserDAO {
 
 	}
 
-	public boolean isvaliduser(String user, String pass, boolean isAdmin) {
+	public boolean isvaliduser(String user, String pass) {
 		String hql = "from user where id='" + user + "' and password= '" + pass + "'";
 		Query q = sessionFactory.getCurrentSession().createQuery(hql);
 		List<User> list = (List<User>) q.list();
@@ -99,6 +95,7 @@ public class UserDAOImpl implements UserDAO {
 		return false;
 
 	}
+
 
 
 }

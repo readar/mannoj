@@ -1,104 +1,77 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <%@include file="Header.jsp" %>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<!DOCTYPE html">
-
+    <%@ include file="header.jsp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>READAR NOVELS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>LOGIN PAGE</title>
+ <link rel="stylesheet" href="<c:url value="/resources/bootstrap-3.3.6-dist/css/bootstrap.min.css"/>">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="<c:url value="/resources/bootstrap-3.3.6-dist/js/bootstrap.min.js" />"></script>
 <style>
-body{
-background-image:url("resources/images/bo3.jpg");
-background-repeat:no-repeat;
-background-size:cover;
-}
-td{
-font-family:regular;
-font-size:20px;
-
-}
+	.img1
+	{
+		height : 350px;
+		width : 700px;
+		/* background-image: url(<c:url value="resources/images/pic1.jpg" />); */
+   		background-position: center;
+    	background-size: 150% 250%;
+    	background-repeat: no-repeat;
+	}
 </style>
 </head>
-<body bgcolor="lightblue">
-<HR>
-<center><h1 style="color:red;font-family:arial">WELCOME TO REVOLUTIONARY NOVELS</h1></center>
-<HR>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<center>
-<form action="perform_login" method="post">
-
-<table>
-<tr>
-<td style="color:magenta">USERNAME:</td>
-<td><input type="text" placeholder="Username" required id="username" name="username" pattern=".{1,10}" /></td>
-</tr>
-<tr>
-<td style="color:magenta">PASSWORD:</td>
-<td><input type="password" placeholder="Password" required id="password" name="password" /></td>
-</tr>
-<tr>
-<td><input type="submit" value="Login"/></td>
-<td><input type="reset" value="Reset"/></td>
-</tr>
-</table>
-</form>
-</CENTER>
-<br><br><br>
-<br><br><br>  
-<%@include file="Footer.jsp" %> 
-
-
-
-<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Login</title>
-<link href="<c:url value="/resources/css/stylee.css" />" rel="stylesheet">
-</head>
-<body style="padding-top:75px">
+<body>
+<!-- 
+<table><tr><td>
+ ${msg}
+ </td></tr>
+ <tr><td>
+ <a href="j_spring_security_logout">logout </a>
+ </td></tr>
+ </table>-->
+	<div class="img1">
 	<div class="container">
-		<section id="content">
-			<form action="perform_login" method="post">
-				<h1>Login Form</h1>
-				<div>
-					<input type="text" placeholder="Username" required id="username" name="username" 
-						pattern=".{1,10}" />
-				</div>
-				<div>
-					<input type="password" placeholder="Password" required id="password" name="password" 
-					title="Enter Valid credentials"/>
-				</div>
-				<div>
-					<input type="submit" value="Log in" /> <a href="#">Lost your
-						password?</a> <a href="Register">Register</a>
-				</div>
-				
-			</form>
-			<!-- form -->
-			<div class="button">
-				<a href="Register">Get New Account</a>
-			</div>
-			<!-- button -->
-		</section>
-		<!-- content -->
-	</div>
-	<!-- container -->
+		<center><font style="color: green;"><h1>${msg}</h1></font></center>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-7">
+            <div class="panel panel-default">
+                <div class="panel-heading"> <strong class="">Login</strong>
+
+                </div>
+                <div class="panel-body">
+              <%--   <form class="form-horizontal" action="<c:url value="/j_spring_security_check" />" method="POST" role="form"> --%>
+                    <form class="form-horizontal" action="perform_login" method="POST">
+                     <!--<c:if test="${not empty error}">
+                   <div class="error" style="color: #ff0000 ;">${error}</div>
+               </c:if>-->
+                        <div class="form-group">
+                            <label for="user_name" class="col-sm-3 control-label">User Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="username" class="form-control" id="username" placeholder="UserName" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required="true">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group last">
+                            <div class="col-sm-offset-3 col-sm-9">
+                             
+                                <button type="submit"  class="btn btn-success btn-sm">Login</button>
+                                <button type="reset" class="btn btn-default btn-sm">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                 <div class="panel-footer">New User <a href="SignUp" class="">Register here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
 </body>
-</html> --%>
+</html>

@@ -1,285 +1,218 @@
-package com.base.Controller;
+package com.niit.controller;
 
+
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Principal;
+import java.util.Collection;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.niit.dao.UserDAO;
+import com.niit.model.Blog;
+import com.niit.model.Message;
+import com.niit.model.OutputMessage;
+import com.niit.model.User;
 
 @Controller
 public class MyController {
 	
-	@RequestMapping("/")
-	public ModelAndView displaywelcomepage(){
-		ModelAndView v1=new ModelAndView("Novels");
-		System.out.println("Welcome is from controller");
-		return v1;
-	}
+	
+	@Autowired
+	UserDAO ud;
 
-/*	@RequestMapping("/Admin")
-	public ModelAndView displayadminpage(){
-		ModelAndView v1=new ModelAndView("Admin");
-		System.out.println("Welcome is from controller");
-		return v1;
-	}*/
-	@RequestMapping("/admin")
-	public ModelAndView displaycartpage(){
-		ModelAndView v1=new ModelAndView("Products");
-		System.out.println("adminproduct is from controller");
-		return v1;
-	}
 	
-	@RequestMapping("/novels")
-	public ModelAndView displayHomepage(){
-		ModelAndView q1=new ModelAndView("Novels");
-		System.out.println("welcome is from controller");
-		return q1;
-	}
-	
-/*	@RequestMapping("/Novels")
-	public ModelAndView displaynovelpage(){
-		ModelAndView q1=new ModelAndView("Novels");
-		System.out.println("Novels is from controller");
-		return q1;
-	}*/
-	@RequestMapping("/Product")
-	public ModelAndView displayProductpage(){
-		ModelAndView q2=new ModelAndView("Product");
-		System.out.println("Product is from controller");
-		return q2;
-	}
-	
+	    @RequestMapping("/")
+	    public ModelAndView land(){
+	 	ModelAndView mv=new ModelAndView("home");
+		return mv;
+		
+	    }
+	    
+		@RequestMapping("/sign")
+		public ModelAndView displayReg(){
+			ModelAndView r1=new ModelAndView("signup","user",new User());
+			System.out.println("reg page is from logicontroller");
+			return r1;
+		}
+		
+		@RequestMapping("/login")
+		public ModelAndView displayglog(){
+			ModelAndView r1=new ModelAndView("login");
+			System.out.println("log page is from logicontroller");
+			return r1;
+		}
+		
+		@RequestMapping("/getchat")
+		public ModelAndView displaychat(){
+			ModelAndView r1=new ModelAndView("chatpage");
+			System.out.println("log page is from logicontroller");
+			return r1;
+		}
+		
+		  @MessageMapping("/chat")
+		  @SendTo("/topic/message")
+		  public OutputMessage sendMessage(Message message) {
+		    return new OutputMessage(message, new Date());
+		  }
+		
+		
+		@RequestMapping("/do_out")
+		public ModelAndView displayout(){
+			ModelAndView r1=new ModelAndView("home");
+			System.out.println("logout done is from logicontroller");
+			return r1;
+		}
+		
+		
+		@ModelAttribute("user")
+		public User returnObject()
+		{
+			return new User();
+		}
+		
+/*		@RequestMapping(value="/signupdate",method=RequestMethod.POST)
+		public ModelAndView register( @ModelAttribute("user") User user,BindingResult bindingResult)
+	    {	
+			if(bindingResult.hasErrors())
+			{
+				return new ModelAndView("signup");
+			}
+			System.out.println("in register controller");
+		//	user.setRole(username);
+			user.setRole("ROLE_USER");
+			user.setAdmin(false);
+			user.setEnabled(true);
+			ud.saveOrUpdate(user);
+			ModelAndView mv = new ModelAndView("login");
+			return mv;
+		}*/
+		
+		 @RequestMapping(value="/signupdate",method=RequestMethod.POST)
+			public String createUser(@Valid @ModelAttribute("user") User users,
+					@RequestParam("file") MultipartFile file,Model model,
+					HttpServletRequest request,BindingResult bindingResult,Principal p)throws IOException
+			{
+			 
+				if(bindingResult.hasErrors())
+				{
+					return "signup";
+				}
+			 	String filename;
+			 	byte[]bytes;
+			 	
+			 			 users.setRole("ROLE_USER");
+			 			
+			 			 users.setAuthority("ROLE_USER");
+			 			 users.setEnabled(true);
+			 			 users.setAdmin(true);
+			 			ud.saveOrUpdate(users);
+			 			
+			 			
+			 			System.out.println("image");
+			 			MultipartFile image=users.getFile();
+			 			Path path;
+			 			path=Paths.get("D:/project 2/FriendSter/src/main/webapp/resources/images//"+users.getId()+".jpg");
+			 			//String path = request.getSession().getServletContext().getRealPath("/resources/images/" + user.getUser_id() + ".jpg");
+			            System.out.println("Path = " + path);
+			            System.out.println("File name = " + users.getFile().getOriginalFilename());
+		
+			            if(image!=null && !image.isEmpty())
+			            {
+			            	try
+			            	{
+			            	   image.transferTo(new File(path.toString()));
+			            	   System.out.println("Image Saved in:"+path.toString());
+			            	}
+			            	catch(Exception e)
+			            	{
+			            		e.printStackTrace();
+			            		System.out.println("Image not saved");
+			            	}
+			            }
 	
 
-	@RequestMapping("/Categories")
-	public ModelAndView displayCategoriespage(){
-		ModelAndView v2=new ModelAndView("Categories");
-		System.out.println("Categories also from controller");
-		return v2;
-	}
-	
-	@RequestMapping("/Genres")
-	public ModelAndView displayGenrespage(){
-		ModelAndView v3=new ModelAndView("Genres");
-		System.out.println("Genres also from controller");
-		return v3;
-	}
-	
-	@RequestMapping("/Author")
-	public ModelAndView displayAuthorpage(){
-		ModelAndView v4=new ModelAndView("Author");
-		System.out.println("Author also from controller");
-		return v4;
-	}
-	
-	@RequestMapping("/Literature")
-	public ModelAndView displayLiteraturepage(){
-		ModelAndView v5=new ModelAndView("Literature");
-		System.out.println("Literature also from controller");
-		return v5;
-	}
-	@RequestMapping("/history")
-	public ModelAndView displayhistorypage(){
-		ModelAndView v6=new ModelAndView("history");
-		System.out.println("history also from controller");
-		return v6;
-	}	
-	@RequestMapping("/children")
-	public ModelAndView displaychildrenpage(){
-		ModelAndView v7=new ModelAndView("children");
-		System.out.println("children also from controller");
-		return v7;
-	}	
+			            
+				return "login";
+			}
 
-	@RequestMapping("/Thrill")
-	public ModelAndView displayThrillpage(){
-		ModelAndView r5=new ModelAndView("Thrill");
-		System.out.println("Thrill also from controller");
-		return r5;
-	}
-	@RequestMapping("/fantasy")
-	public ModelAndView displayfantasypage(){
-		ModelAndView r6=new ModelAndView("fantasy");
-		System.out.println("fantasy also from controller");
-		return r6;
-	}
-	@RequestMapping("/Adventure")
-	public ModelAndView displayAdventurepage(){
-		ModelAndView r7=new ModelAndView("Adventure");
-		System.out.println("Adventure also from controller");
-		return r7;
-	}
-	@RequestMapping("/Horror")
-	public ModelAndView displayHorrorpage(){
-		ModelAndView r9=new ModelAndView("Horror");
-		System.out.println("Horror also from controller");
-		return r9;
-	}
-/*	@RequestMapping("/icefor")
-	public ModelAndView displayBusinesspage(){
-		ModelAndView r8=new ModelAndView("icefor");
-		System.out.println("icefor also from controller");
-		return r8;
-	}
-	@RequestMapping("/storm")
-	public ModelAndView displaystormpage(){
-		ModelAndView r8=new ModelAndView("storm");
-		System.out.println("storm also from controller");
-		return r8;
-	}
-	@RequestMapping("/gonegirl")
-	public ModelAndView displaygonegirlpage(){
-		ModelAndView r8=new ModelAndView("gonegirl");
-		System.out.println("gonegirl also from controller");
-		return r8;
-	}
-	@RequestMapping("/beforei")
-	public ModelAndView displaybeforei(){
-		ModelAndView r8=new ModelAndView("beforei");
-		System.out.println("beforei also from controller");
-		return r8;
-	}
-	@RequestMapping("/pride")
-	public ModelAndView displaypride(){
-		ModelAndView r8=new ModelAndView("pride");
-		System.out.println("pride also from controller");
-		return r8;
-	}
-	@RequestMapping("/greatgatsby")
-	public ModelAndView displaygreatgatsby(){
-		ModelAndView r8=new ModelAndView("greatgatsby");
-		System.out.println("greatgatsby also from controller");
-		return r8;
-	}
-	@RequestMapping("/mockbird")
-	public ModelAndView displaymockbird(){
-		ModelAndView r8=new ModelAndView("mockbird");
-		System.out.println("mockbird also from controller");
-		return r8;
-	}
-	@RequestMapping("/indaftr")
-	public ModelAndView displayindaftr(){
-		ModelAndView r8=new ModelAndView("indaftr");
-		System.out.println("indaftr also from controller");
-		return r8;
-	}
-	@RequestMapping("/indwins")
-	public ModelAndView displayindwins(){
-		ModelAndView r8=new ModelAndView("indwins");
-		System.out.println("mindwins also from controller");
-		return r8;
-	}
-	@RequestMapping("/haryport")
-	public ModelAndView displayharyport(){
-		ModelAndView r8=new ModelAndView("haryport");
-		System.out.println("haryport also from controller");
-		return r8;
-	}
-	@RequestMapping("/harold")
-	public ModelAndView displayharold(){
-		ModelAndView r8=new ModelAndView("harold");
-		System.out.println("harold also from controller");
-		return r8;
-	}
-	@RequestMapping("/bridge")
-	public ModelAndView displaybridge(){
-		ModelAndView r8=new ModelAndView("bridge");
-		System.out.println("bridge also from controller");
-		return r8;
-	}
-	@RequestMapping("/shadowof")
-	public ModelAndView displayshadowof(){
-		ModelAndView r8=new ModelAndView("shadowof");
-		System.out.println("shadowof also from controller");
-		return r8;
-	}
-	@RequestMapping("/threemistak")
-	public ModelAndView displaythreemistak(){
-		ModelAndView r8=new ModelAndView("threemistak");
-		System.out.println("threemistak also from controller");
-		return r8;
-	}
-	@RequestMapping("/whatyoun")
-	public ModelAndView displayswhatyoun(){
-		ModelAndView r8=new ModelAndView("whatyoun");
-		System.out.println("whatyoun also from controller");
-		return r8;
-	}
-	@RequestMapping("/fivepoint")
-	public ModelAndView displayfivepoint(){
-		ModelAndView r8=new ModelAndView("fivepoint");
-		System.out.println("fivepoint also from controller");
-		return r8;
-	}
-	@RequestMapping("/malgudi")
-	public ModelAndView displaymalgudi(){
-		ModelAndView r8=new ModelAndView("malgudi");
-		System.out.println("malgudi also from controller");
-		return r8;
-	}
-	@RequestMapping("/swami")
-	public ModelAndView displayswami(){
-		ModelAndView r8=new ModelAndView("swami");
-		System.out.println("swami also from controller");
-		return r8;
-	}
-	@RequestMapping("/talk")
-	public ModelAndView displaytalk(){
-		ModelAndView r8=new ModelAndView("talk");
-		System.out.println("talk also from controller");
-		return r8;
-	}
-	@RequestMapping("/sher")
-	public ModelAndView displaysher(){
-		ModelAndView r8=new ModelAndView("sher");
-		System.out.println("sher also from controller");
-		return r8;
-	}
-	@RequestMapping("/advnsher")
-	public ModelAndView displayadvnsher(){
-		ModelAndView r8=new ModelAndView("advnsher");
-		System.out.println("advnsher also from controller");
-		return r8;
-	}
-	@RequestMapping("/greatboer")
-	public ModelAndView displaygreatboer(){
-		ModelAndView r8=new ModelAndView("greatboer");
-		System.out.println("greatboer also from controller");
-		return r8;
-	}
-		@RequestMapping("/fearstreet")
-	public ModelAndView displayBiopage(){
-		ModelAndView v8=new ModelAndView("fearstreet");
-		System.out.println("fearstreet also from controller");
-		return v8;
-	}	
-	@RequestMapping("/inheart")
-	public ModelAndView displayAwardpage(){
-		ModelAndView v9=new ModelAndView("inheart");
-		System.out.println("inheart also from controller");
-		return v9;
-	}	
-	@RequestMapping("/ChetanBooks")
-	public ModelAndView displayChetanBookspage(){
-		ModelAndView r1=new ModelAndView("ChetanBooks");
-		System.out.println("ChetanBooks also from controller");
-		return r1;
-	}
-	@RequestMapping("/RKnarayanBooks")
-	public ModelAndView displayRKnarayanBookspage(){
-		ModelAndView r2=new ModelAndView("RKnarayanBooks");
-		System.out.println("RKnarayanBooks also from controller");
-		return r2;
-	}
-	@RequestMapping("/devilgate")
-	public ModelAndView displayRonaldsegalbookspage(){
-		ModelAndView r3=new ModelAndView("devilgate");
-		System.out.println("devilgate also from controller");
-		return r3;
-	}
-	@RequestMapping("/SirArthurBooks")
-	public ModelAndView displaySirArthurBookspage(){
-		ModelAndView r4=new ModelAndView("SirArthurBooks");
-		System.out.println("SirArthurBooks also from controller");
-		return r4;
-	}*/
+/*		@RequestMapping("/loggedcheck")
+		public ModelAndView displaylog(@RequestParam(value="username") String usernme,@RequestParam(value="password") String pwd){
+			ModelAndView mv = new ModelAndView("index");;
+			if(ud.isvaliduser(usernme, pwd)==true)
+			{
+				mv = new ModelAndView("index");
+			}
+			else
+			{
+				mv=new ModelAndView("errorpage");
+			}
+		
+			System.out.println("index is from logicontroller");
+			return mv;
+		}*/
+		
+		 @RequestMapping(value = "/login_session_attributes")
+			public String login_session_attributes(HttpSession session,ModelMap model) {
+				String name = SecurityContextHolder.getContext().getAuthentication().getName();
+				System.out.println("1");
+				
+				//User user = userService.getUserByName(name);
+				
+				System.out.println("2");
+				
+				//session.setAttribute("userId", user.getId());
+				System.out.println("3");
+				
+			session.setAttribute("username",name);
+				
+			session.setAttribute("LoggedIn", "true");
 
+				@SuppressWarnings("unchecked")
+				Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder.getContext()
+				.getAuthentication().getAuthorities();
+				
+				String role="ROLE_USER";
+				for (GrantedAuthority authority : authorities) 
+				{
+				  
+				     if (authority.getAuthority().equals(role)) 
+				     {
+				    	 
+				 
+				    	System.out.println("success user login");
+				    	return "index";
+				     
+				     }
+				     
+				    
+
+				}
+				return "home";
+		 }
+		 
+		 
+		 
 }
