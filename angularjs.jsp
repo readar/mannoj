@@ -4,69 +4,51 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Blog Page</title>
-    <head> 
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="resources/bootstrap/js/jquery-1.9.1.mini.js"></script>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-
-    
-    <!-- <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-    
+<title>Product Page</title>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
 <script	src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+  <script>document.write('<base href="' + document.location + '" />');</script>
+    <link href="./resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="./resources/css/style.css" rel="stylesheet" media="screen">
+    <script data-require="angular.js@1.0.x" src="http://code.angularjs.org/1.0.7/angular.min.js" data-semver="1.0.7"></script>
 
-<style>
-.itm{
-width:70%;
-margin: auto;
-}
-</style>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-    <script>
+<script>
 var app = angular.module('myApp', []);
+ 
+function MyController($scope, $http) {
 
-function BlogController($scope, $http) {
-
-	  $scope.sortType     = 'name'; // set the default sort type
-	  $scope.sortReverse  = false;  // set the default sort order
-	  $scope.searchDeviceName   = '';     // set the default search/filter term
-
+	 $scope.sortType = 'name'; // set the default sort type
+	  $scope.sortReverse = false;  // set the default sort order
+	  $scope.searchPTitle = '';
+	  
         $scope.getDataFromServer = function() {
                 $http({
                         method : 'GET',
-                        url : 'getBlogData'
+                        url : 'GsonCon'
                 }).success(function(data, status, headers, config) {
-                        $scope.Blogs = data; alert(data);
+                        $scope.prod = data;  
                 }).error(function(data, status, headers, config) {
-                        
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
                 });
-
         };
 };
+
+
+
 </script>
 </head>
 <body>
 
 <div class="container" ng-app="myApp" ng-controller="MyController" ng-init="getDataFromServer()">
   
-  <form>
+   <form>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon"><i class="fa fa-search"></i></div>
-        <input type="text" class="form-control" placeholder="Search Blog Name" ng-model="searchBTitle">      
+        <input type="text" class="form-control" placeholder="Search Product Name" ng-model="searchPTitle">      
        </div>      
     </div>
   </form>
@@ -76,51 +58,72 @@ function BlogController($scope, $http) {
     <thead>
       <tr>
       <td>
-          <a href="#" ng-click="sortType = 'BlogID'; sortReverse = !sortReverse">
-            Blog Id 
-            <span ng-show="sortType == 'BlogID' && !sortReverse" class="fa fa-caret-down"></span>
-            <span ng-show="sortType == 'BlogID' && sortReverse" class="fa fa-caret-up"></span>
+          <a href="#" ng-click="sortType = 'ptid'; sortReverse = !sortReverse">
+            Product Id 
+            <span ng-show="sortType == 'ptid' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'ptid' && sortReverse" class="fa fa-caret-up"></span>
           </a>
         </td>
         
         <td>
-          <a href="#" ng-click="sortType = 'BlogTitle'; sortReverse = !sortReverse">
-            Blog Name 
-            <span ng-show="sortType == 'BlogTitle' && !sortReverse" class="fa fa-caret-down"></span>
-            <span ng-show="sortType == 'BlogTitle' && sortReverse" class="fa fa-caret-up"></span>
+          <a href="#" ng-click="sortType = 'ptname'; sortReverse = !sortReverse">
+            Product Name 
+            <span ng-show="sortType == 'ptname' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'ptname' && sortReverse" class="fa fa-caret-up"></span>
           </a>
         </td>
         <td>
-          <a href="#" ng-click="sortType = 'BlogContent'; sortReverse = !sortReverse">
-          Content 
-            <span ng-show="sortType == 'BlogContent' && !sortReverse" class="fa fa-caret-down"></span>
-            <span ng-show="sortType == 'BlogContent' && sortReverse" class="fa fa-caret-up"></span>
+          <a href="#" ng-click="sortType = 'ptquantity'; sortReverse = !sortReverse">
+          Quantity
+            <span ng-show="sortType == 'ptquantity' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'ptquantity' && sortReverse" class="fa fa-caret-up"></span>
           </a>
         </td>
         <td>
-          <a href="#" ng-click="sortType = 'BlogCreatedUser'; sortReverse = !sortReverse">
-          User Name
-            <span ng-show="sortType == 'BlogCreatedUser' && !sortReverse" class="fa fa-caret-down"></span>
-            <span ng-show="sortType == 'BlogCreatedUser' && sortReverse" class="fa fa-caret-up"></span>
+          <a href="#" ng-click="sortType = 'ptprice'; sortReverse = !sortReverse">
+          Price
+            <span ng-show="sortType == 'ptprice' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'ptprice' && sortReverse" class="fa fa-caret-up"></span>
           </a>
         </td>
         <td>
-          <a href="#" ng-click="sortType = 'BlogCreationDate'; sortReverse = !sortReverse">
-          Creation Date
-            <span ng-show="sortType == 'BlogCreationDate' && !sortReverse" class="fa fa-caret-down"></span>
-            <span ng-show="sortType == 'BlogCreationDate' && sortReverse" class="fa fa-caret-up"></span>
+          <a href="#" ng-click="sortType = 'ptauthor'; sortReverse = !sortReverse">
+          Author
+            <span ng-show="sortType == 'ptauthor' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'ptauthor' && sortReverse" class="fa fa-caret-up"></span>
           </a>
         </td>
-        </tr>
+        
+ <!--       <td>
+          <a href="#" ng-click="sortType = 'ptauthor'; sortReverse = !sortReverse">
+          Category
+            <span ng-show="sortType == 'category' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'category' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td>
+                <td>
+          <a href="#" ng-click="sortType = 'ptauthor'; sortReverse = !sortReverse">
+          Supplier
+            <span ng-show="sortType == 'supplier' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'supplier' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td> -->
+
     </thead>
     
     <tbody>
-      <tr ng-repeat="b1 in blog | orderBy:sortType:sortReverse | filter:searchBTitle">
-           		<td>{{b1.BlogID}}</td>
-           		<td>{{b1.BlogTitle}}</td>
-           		<td>{{b1.BlogContent}}</td>
-           		<td>{{b1.BlogCreatedUser}}</td>
-           		<td>{{b1.BlogCreationDate}}</td>
+      <tr ng-repeat="p1 in prod | orderBy:sortType:sortReverse | filter:searchPTitle">
+           		<td>{{p1.ptid}}</td>
+           		<td>{{p1.ptname}}</td>
+           		<td>{{p1.ptquantity}}</td>
+           		<td>{{p1.ptprice}}</td>
+           		<td>{{p1.ptauthor}}</td>
+           		<!-- <td><img src="resources/images/{p1.name}.jpg" style="width: 200px;height:150px"></td> -->
+           		
+          
+           		
+           	
+           		
            	
       </tr>
     </tbody>

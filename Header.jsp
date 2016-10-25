@@ -52,7 +52,8 @@
 								class="fa fa-user"></i> Hi, ${username}</a></li>
 					</c:when>
 					<c:otherwise>
-						<li style="float: right"><a href="RegisterPage">Sign up</a></li>
+						<li style="float: right"><a href="memberShip.obj">Sign up</a></li>
+						<!-- <li style="float: right"><a href="RegisterPage">Sign up</a></li> -->
 						<li style="float: right"><a href="log">Login</a></li>
 					</c:otherwise>
 					</c:choose>

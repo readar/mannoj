@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:context="http://www.springframework.org/schema/context" 
-	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/context 
-	http://www.springframework.org/schema/context/spring-context.xsd 
-	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx 
 	http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<context:annotation-config />
 	
@@ -22,7 +17,7 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
 				<prop key="hibernate.current_session_context_class">thread</prop>
-<!-- 				<prop key="hibernate.hbm2ddl.auto">create</prop> only for first 
+				<!-- <prop key="hibernate.hbm2ddl.auto">create</prop> only for first 
 					time, otherwise table created again and again -->
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.show_sql">true</prop>
@@ -30,45 +25,49 @@
 		</property>
 		<property name="annotatedClasses">
 			<list>
-			
-				<value>com.niit.controller.MyController</value>
-				<value>com.niit.dao.UserDAOImpl</value>
-				<value>com.niit.model.User</value>
+    			<value>com.base.Controller.MyController</value>
+				<value>com.base.Controller.CategoryController</value>
+				<value>com.base.model.Category</value>
+				<value>com.base.dao.CategoryDAOImpl</value>
+		        <value>com.base.service.CategoryService</value> 
+		        
+				<value>com.base.model.User</value>
+				<value>com.base.Controller.LogiController</value>
 				
-				<value>com.niit.controller.BlogController</value>
-				<value>com.niit.dao.BlogDAOImpl</value>
-				<value>com.niit.model.Blog</value>
+				<value>com.base.service.UserService</value>
+				<value>com.base.dao.UserDAOImpl</value>		
 				
-				<value>com.niit.controller.ForumController</value>
-				<value>com.niit.dao.ForumDAOImpl</value>
-				<value>com.niit.model.Forum</value>
-			
-		<!-- 	 <value>com.colb.model.User</value> 	
-				<value>com.colb.dao.UserDAOImpl</value>
-				<value>com.colb.service.UserService</value>
-				<value>com.colb.model.Blog</value>
-				<value>com.colb.dao.BlogDAOImpl</value>
-				<value>com.colb.model.Forum</value>
-				<value>com.colb.dao.ForumDAOImpl</value> -->
-
+				<value>com.base.model.Supplier</value>		
+				<value>com.base.dao.SupplierDAOImpl</value>
+				<value>com.base.Controller.SupplierController</value>
+				<value>com.base.service.SupplierService</value>
+				
+				<value>com.base.model.Product</value>
+				<value>com.base.Controller.ProductController</value>
+				<value>com.base.dao.ProductDAOImpl</value>
+				<value>com.base.service.ProductService</value>
+				
+			<!-- 	<value>com.base.model.Cart</value>
+				
+				<value>com.base.dao.CartDAOImpl</value>
+				<value>com.base.service.CartService</value> -->
 			</list>
 		</property>
 
 		<property name="packagesToScan">
 			<list>
-				<value>com.niit</value>
-				<value>com.niit.controller</value>
-				<value>com.niit.model</value>
-				<value>com.niit.dao</value>
-				
-				
+				<value>com.base</value>
+				<value>com.base.controller</value>
+				<value>com.base.model</value>
+				<value>com.base.dao</value>
+				<value>com.base.service</value>
 			</list>
 		</property>
 
 	</bean>
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.h2.Driver" />
-		<property name="url" value="jdbc:h2:tcp://localhost/~/friendster" />
+		<property name="url" value="jdbc:h2:tcp://localhost/~/dt2" />
 		<property name="username" value="sa" />
 		<property name="password" value="" />
 	</bean>
