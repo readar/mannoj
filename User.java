@@ -1,101 +1,75 @@
-package com.niit.model;
+package com.base.model;
+
+import java.io.Serializable;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+
+
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.validator.constraints.NotEmpty;
+
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table
 @Component
-
-public class User {
-	
+public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	
 	public int id;
-	
-	@NotEmpty(message="username cannot be empty")
+//	@NotEmpty(message="first name cannot be empty")
+	public String firstname;
+//	@NotEmpty(message="middle name cannot be empty")
+	public String middlename;
+//	@NotEmpty(message="last name cannot be empty")
+	public String lastname;
+//	@NotEmpty(message="username cannot be empty")
 	public String username;
-	
-	@NotEmpty(message="password cannot be empty")
+//	@NotEmpty(message="password cannot be empty")
 	public String password;
-	
-	@Transient
-	private String ConfirmPassword;
-	
-	public String getConfirmPassword() {
-		return ConfirmPassword;
-	}
-	public void setConfirmPassword(String confirmPassword) {
-		ConfirmPassword = confirmPassword;
-	}
-	@NotEmpty(message="email cannot be empty")
+//	@NotEmpty(message="email cannot be empty")
 	public String email;
 	
-	private String role;
-	
-	private String authority;
-	
-	
-	
-	public String getAuthority() {
-		return authority;
-	}
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
-	private String Address;
+	@Transient
+	private String confirmpassword;
 	
 	@Column(name="enabled")
 	private boolean isEnabled;
 	
-	private boolean isAdmin;
 	
-	
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-	@Transient
-	private MultipartFile file;
-	
-	
-	public MultipartFile getFile() {
-		return file;
-	}
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getRole() {
-		return role;
+	public String getFirstname() {
+		return firstname;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
-	public String getAddress() {
-		return Address;
+	public String getMiddlename() {
+		return middlename;
 	}
-	public void setAddress(String address) {
-		Address = address;
+	public void setMiddlename(String middlename) {
+		this.middlename = middlename;
 	}
-	
+	public String getLastname() {
+		return lastname;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -120,9 +94,37 @@ public class User {
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
 	}
+	public String getConfirmpassword() {
+		return confirmpassword;
+	}
+	public void setConfirmpassword(String confirmpassword) {
+		this.confirmpassword = confirmpassword;
+	}
+	
+	
+	private String isrole;
+
+
+	public String getIsrole() {
+		return isrole;
+	}
+	public void setIsrole(String isrole) {
+		this.isrole = isrole;
+	}
+
 
 
 	
-	
+/*	private UserRole role;
+
+
+	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinColumn(name="isrole")
+	public UserRole getRole() {
+		return role;
+	}
+	public void setRole(UserRole role) {
+		this.role = role;
+	}*/
 	
 }

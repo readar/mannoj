@@ -1,19 +1,17 @@
-package com.niit.dao;
+package com.base.dao;
 
 import java.util.List;
 
-import com.niit.model.User;
-
+import com.base.model.User;
 
 public interface UserDAO {
 	
-	
 	public List<User> list();
 	public User get(int id);
-	public void saveOrUpdate(User user);
+	public void save(User user);
 	public void delete (int d);
 	public User getusername(String name);
-	public boolean isvaliduser(String user, String pass);
-
-
+	public boolean isvaliduser(String user, String pass,boolean isAdmin);
+	
+	
 }

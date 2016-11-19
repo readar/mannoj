@@ -1,4 +1,4 @@
-package com.niit.dao;
+package com.base.dao;
 
 import java.util.List;
 
@@ -9,16 +9,16 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import com.niit.model.User;
+import com.base.model.User;
+
 
 
 
 @Repository("userDAO")
-
 public class UserDAOImpl implements UserDAO {
-	
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -31,19 +31,49 @@ public class UserDAOImpl implements UserDAO {
 		System.out.println("Inside UserDAOImpl");
 	}
 	
+/*	public User initFlow()
+	{
+		return new User();
+		
+	}*/
+		
 	
-	public void saveOrUpdate(User user) {
-		Session session=sessionFactory.getCurrentSession();
-		Transaction tx=session.beginTransaction();
-		session.save(user);
-		System.out.println("Done saving user");
+	
+	public void save(User user) {
+//		log.debug("Starting");
+		System.out.println("in userdetails save.");
+		// TODO Auto-generated method stub
+		try {
+			Session session=sessionFactory.getCurrentSession();
+			Transaction tx=session.beginTransaction();
+			session.save(user);
 		tx.commit();
+	//		return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		log.debug("Ending");
+	//	return false;
 	}
+		/*Session session=sessionFactory.getCurrentSession();
+		Transaction tx=session.beginTransaction();
+		UserRole userRole=new UserRole();
+		userRole.setId(user.getId());
+		userRole.setAuthority("ROLE_USER");
+		session.save(userRole);
+		
+		user.setEnabled(true);
+	//	user.setRole(userRole);
+		session.save(user);
+	    
+		System.out.println("Done saving user");
+		tx.commit();*/
+//	}
 	@Transactional
-	public void delete(int uid) {
+	public void delete(int id) {
 		User user = new User();
-		user.setId(uid);
-
+		user.setId(id);
 		sessionFactory.getCurrentSession().delete(user);
 
 	}
@@ -84,7 +114,7 @@ public class UserDAOImpl implements UserDAO {
 
 	}
 
-	public boolean isvaliduser(String user, String pass) {
+	public boolean isvaliduser(String user, String pass, boolean isAdmin) {
 		String hql = "from user where id='" + user + "' and password= '" + pass + "'";
 		Query q = sessionFactory.getCurrentSession().createQuery(hql);
 		List<User> list = (List<User>) q.list();
@@ -95,7 +125,6 @@ public class UserDAOImpl implements UserDAO {
 		return false;
 
 	}
-
 
 
 }

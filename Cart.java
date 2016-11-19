@@ -1,91 +1,61 @@
 package com.base.model;
 
-
-import javax.persistence.Entity;
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 
 
-import org.springframework.stereotype.Component;
-
-@Entity
-@Table
-@Component
 public class Cart {
 	
+	
 	@Id
-	@GeneratedValue
-	private int id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int cid;
+	private String quantity;
+	private long totalprice;
 	
 	
-	@OneToOne
-	private Product product;
-	
-	@OneToOne
-	private User user;
-	
-	private String productname;
-	private long price;
-
-	private int quantity;
-	
-
-
-	public int getQuantity() {
+	public int getCid() {
+		return cid;
+	}
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+	public String getQuantity() {
 		return quantity;
 	}
-
-	public void setQuantity(int quantity) {
+	public void setQuantity(String quantity) {
 		this.quantity = quantity;
 	}
-
-	public int getId() {
-		return id;
+	public long getTotalprice() {
+		return totalprice;
 	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void setTotalprice(long totalprice) {
+		this.totalprice = totalprice;
 	}
+	
+	
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinColumn(name="prodid", insertable = false, updatable = false)
+	private Product prod;
 
 
-	public Product getProduct() {
-		return product;
+	public Product getProd() {
+		return prod;
 	}
-
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProd(Product prod) {
+		this.prod = prod;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public String getProductname() {
-		return productname;
-	}
-
-	public void setProductname(String productname) {
-		this.productname = productname;
-	}
-
-	public long getPrice() {
-		return price;
-	}
-
-	public void setPrice(long price) {
-		this.price = price;
-	}
-
-
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinColumn(name="usrid", insertable = false, updatable = false)
+	private User usr;
+	
 	
 
 }

@@ -20,9 +20,9 @@ public class UserService implements UserServiceInterface {
 		 return userDAO.isvaliduser(user, pass, isAdmin);
 		 
 	 }
-	public void saveOrUpdate(User user)
+	public void save(User user)
 	{
-		userDAO.saveOrUpdate(user);	
+		userDAO.save(user);	
 	}
 	public List<User> list()
 	{

@@ -4,123 +4,77 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.base.model.Cart;
+import com.base.model.Category;
+import com.base.model.User;
 
 
 @Repository("cartDAO")
 public class CartDAOImpl implements CartDAO {
 	
-	
 	@Autowired
-	private SessionFactory sessionFactory;
+	SessionFactory sessionFactory;
 	
-	public CartDAOImpl(SessionFactory sessionFactory) 
-	{
-		this.sessionFactory = sessionFactory;
+	public CartDAOImpl(SessionFactory sf) {
+		sessionFactory=sf;
 	}
-	@SuppressWarnings("unchecked")
-	
-    @Transactional
+
 	public List<Cart> list() {
-
-	List<Cart> listCategory = (List<Cart>)sessionFactory.getCurrentSession()
-					.createCriteria(Cart.class)
-					.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-
-			return listCategory;
-		}
-	@SuppressWarnings("unchecked")
-    @Transactional
-	public List<Cart> get(int userId) {
-
-		String hql = "from"+" Cart"+" where userId="+userId+"and status='C'";
-		@SuppressWarnings("rawtypes")
-		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		List<Cart> list = (List<Cart>)query.list();
-
-		return list;
-	}
-	
-    @Transactional
-	public void saveOrUpdate(Cart cart) {
-
-		sessionFactory.getCurrentSession().saveOrUpdate(cart);
-
-	}
-    @Transactional
-	public void delete(int cartid) {
-
-		Cart cart = new Cart();
-		cart.setId(cartid);
-		sessionFactory.getCurrentSession().delete(cart);
-
-	}
-    @Transactional
-	public long CartPrice(int userId) {
-
-		Criteria c=sessionFactory.getCurrentSession().createCriteria(Cart.class);
-		c.add(Restrictions.eq("userid", userId));
-		c.add(Restrictions.eq("status","C"));
-		c.setProjection(Projections.sum("price"));
-		Long g= (Long) c.uniqueResult();
-
-		return g;
+		
+		@SuppressWarnings({ "unchecked" })
+		List<Cart> listCategory=(List<Cart>) sessionFactory.getCurrentSession()
+				                     .createCriteria(Cart.class)
+				                     .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+		return listCategory;
 		
 	}
-	@SuppressWarnings("unchecked")
-    @Transactional
-	public Cart getitem(int cartId) {
 
-		String hql = "from"+" Cart"+" where id="+cartId;
-		@SuppressWarnings("rawtypes")
-		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		List<Cart> list = (List<Cart>) query.list();
+	public Cart get(int id) {
+		String hql = "from Cart where id=" + "'" + id + "'";
+		Query query = (Query) sessionFactory.getCurrentSession().createQuery(hql);
+		@SuppressWarnings("unchecked")
+		List<Cart> listUser = (List<Cart>) query.list();
 
-		if (list!= null && !list.isEmpty()) {
-			return list.get(0);
+		if (listUser != null && listUser.isEmpty()) {
+			return listUser.get(0);
 		}
+		System.out.println("success");
 		return null;
+
 	}
-    @Transactional
-	public Cart getitem(int prodId, int userId) {
 
-		String hql = "from"+" Cart"+" where userid="+userId+" and productid="+"'"+prodId+"'";
-		@SuppressWarnings("rawtypes")
-		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		List<Cart> list = (List<Cart>) query.list();
+	public void save(Cart cart) {
+		Transaction t = sessionFactory.getCurrentSession().beginTransaction();
 
-		if (list!= null && !list.isEmpty()) {
-			return list.get(0);
-		}
+		sessionFactory.getCurrentSession().save(cart);
+		t.commit();
+	}
+
+	public void delete(int id) {
+		Cart cid=new Cart();
+		
+		sessionFactory.getCurrentSession().delete(cid);
+		
+		
+	}
+    public Cart getCartItemByProductId(int productId){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Cart where prodid = ?");
+        query.setInteger(0, productId);
+        session.flush();
+
+        return (Cart) query.uniqueResult();
+    }
+
+	public Cart getusrprod(int uid, int pid) {
+		// TODO Auto-generated method stub
 		return null;
-	}
-    @Transactional
-	public long cartsize(int userId) {
-	
-		Criteria c=sessionFactory.getCurrentSession().createCriteria(Cart.class);
-		c.add(Restrictions.eq("userid", userId));
-	//	c.add(Restrictions.eq("status","C"));
-		c.setProjection(Projections.count("userid"));
-		long count= (Long) c.uniqueResult();
-
-		return count;
-	}
-    @Transactional
-	public void pay(int userId) {
-	
-		String hql="update Cart set status='P' where userid="+userId;	
-		@SuppressWarnings("rawtypes")
-		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		query.executeUpdate();
-
 	}
 
 }

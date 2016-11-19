@@ -5,23 +5,23 @@ import java.util.List;
 import com.base.model.Cart;
 
 
-public interface CartDAO {
 
+public interface CartDAO {
+	
 	public List<Cart> list();
 
-	public List<Cart> get(int userId);
-	
-	public Cart getitem(int cartId);
+	public Cart get(int id);
 
-	public void saveOrUpdate(Cart cart);
+	public void save(Cart cart);
 
-	public void delete(int userId);
+	public void delete(int id);
 	
-	public long CartPrice(int userId);	
+	public Cart getusrprod(int uid,int pid);
 	
-	public Cart getitem(int prodId,int userId);
+	public Cart getCartItemByProductId(int productId);
 	
-	public long cartsize(int userId);
 	
-	public void pay(int userId);
+
+	
+
 }
