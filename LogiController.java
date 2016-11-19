@@ -47,7 +47,7 @@ public class LogiController {
 		
 		return mv;
 	}
-	@RequestMapping(value="/register",method=RequestMethod.POST)
+/*	@RequestMapping(value="/register",method=RequestMethod.POST)
 	public ModelAndView register(@Valid@ModelAttribute("user") User user,BindingResult bindingResult)
     {	
 		if(bindingResult.hasErrors())
@@ -55,10 +55,10 @@ public class LogiController {
 			return new ModelAndView("RegisterPage");
 		}
 		System.out.println("in register controller");
-		us.saveOrUpdate(user);
+		us.save(user);
 		ModelAndView mv = new ModelAndView("login");
 		return mv;
-	}
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/login_session_attributes")
